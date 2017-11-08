@@ -1,0 +1,30 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:DankOS="clr-namespace:Dank_OS">
+    <Style TargetType="DankOS:AppWindowBase" x:Key="WindowBase">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DankOS:AppWindowBase}">
+                    <Grid x:Name="mainGrd">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <DankOS:AppTitleBar x:Name="titlebar" AppIconSource="{Binding RelativeSource={RelativeSource TemplatedParent},Path=AppData.AppIcon,FallbackValue='tic tac toe.png'}" AppTitle="{Binding RelativeSource={RelativeSource TemplatedParent},Path=AppData.AppName,FallbackValue='Window Base'}"/>
+                        <Border Grid.Row="1">
+                            <Border.Background>
+                                <SolidColorBrush Color="#FFE0E0E0" Opacity="0.4"/>
+                            </Border.Background>
+                            <ContentControl Content="{TemplateBinding Content}"/>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

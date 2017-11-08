@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Dank_OS.DesktopIcon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:DankOS="clr-namespace:Dank_OS"
+             mc:Ignorable="d" 
+             MouseLeftButtonUp="UserControl_MouseLeftButtonUp"
+             MouseLeftButtonDown="UserControl_MouseLeftButtonDown"
+             MouseMove="UserControl_MouseMove"
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="_parentGrid">
+    <UserControl.Resources>
+        <BitmapImage x:Key="DefaultImage"  UriSource="/Dank OS;component/Controls/Desktop/Icons/tictactoe.png" />
+    </UserControl.Resources>
+    <Grid Style="{StaticResource ItemHoverEffect}">
+        <!--<Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Open"/>
+                <MenuItem Header="Open As Adminstrator"/>
+                <MenuItem Header="Copy"/>
+                <MenuItem Header="Cut"/>
+                <MenuItem Header="Delete"/>
+            </ContextMenu>
+        </Grid.ContextMenu>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Source="{Binding AppData.AppIcon,FallbackValue={StaticResource DefaultImage}}"/>
+        <TextBlock Padding="0,7,0,0" Grid.Row="1" FontSize="15" Text="{Binding AppData.AppName, FallbackValue='Tic Tac Toe'}" FontFamily="Enter The Grid" Foreground="Black" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+    </Grid>
+</UserControl>

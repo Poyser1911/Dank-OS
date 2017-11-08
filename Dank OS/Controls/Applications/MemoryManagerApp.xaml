@@ -1,0 +1,62 @@
+﻿<DankOS:AppWindowBase x:Class="Dank_OS.MemoryManagerApp"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:DankOS="clr-namespace:Dank_OS"
+             mc:Ignorable="d" 
+             d:DesignHeight="345" d:DesignWidth="780">
+    <DankOS:AppWindowBase.Resources>
+        <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource DankToolTipStyle}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+    </DankOS:AppWindowBase.Resources>
+    <Grid Margin="10" SizeChanged="MemView_SizeChanged">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="MemView" Grid.Row="1" Orientation="Horizontal">
+            <StackPanel.Background>
+                <SolidColorBrush Color="White" Opacity="0.3"/>
+            </StackPanel.Background>
+            <!--<StackPanel.ToolTip>
+                <ToolTip>
+                    <ToolTip.Triggers>
+                        <EventTrigger RoutedEvent="ToolTip.Opened">
+                            <BeginStoryboard>
+                                <Storyboard TargetProperty="Opacity">
+                                    <DoubleAnimation From="0.0" To="1.0" Duration="0:0:1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ToolTip.Triggers>
+                </ToolTip>
+            </StackPanel.ToolTip>-->
+        </StackPanel>
+        <Grid Grid.Row="2" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Label Foreground="Black" Grid.Column="0" FontSize="20" Content="Block A" FontFamily="Enter The Grid" HorizontalContentAlignment="Center"/>
+            <Label Foreground="Black" Grid.Column="1" FontSize="20" Content="Block B" FontFamily="Enter The Grid" HorizontalContentAlignment="Center"/>
+            <Label Foreground="Black" Grid.Column="2" FontSize="20" Content="Block C" FontFamily="Enter The Grid" HorizontalContentAlignment="Center"/>
+
+            <Grid Grid.Row="1" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+               
+            </Grid>
+        </Grid>
+    </Grid>
+</DankOS:AppWindowBase>
