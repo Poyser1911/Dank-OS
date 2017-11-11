@@ -48,10 +48,6 @@
       <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialIcons, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialIcons.1.0.3\lib\MaterialIcons.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -76,24 +72,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ApplicationManager\ApplicationManagerInstance.cs" />
-    <Compile Include="Controls\Applications\FileManagerApp.xaml.cs">
+    <Compile Include="Managers\ApplicationManager\ApplicationManagerInstance.cs" />
+    <Compile Include="Controls\Applications\Base\AppWindowState.cs" />
+    <Compile Include="Controls\Applications\FileManager App\FileManagerApp.xaml.cs">
       <DependentUpon>FileManagerApp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Applications\ProcessManangerApp.xaml.cs">
+    <Compile Include="Controls\Applications\Process Manager App\ProcessManangerApp.xaml.cs">
       <DependentUpon>ProcessManangerApp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Applications\Tic Tac Toe\GameSquareItem.xaml.cs">
+    <Compile Include="Controls\Applications\Tic Tac Toe App\GameSquareItem.xaml.cs">
       <DependentUpon>GameSquareItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Applications\Base\AppTitleBar.xaml.cs">
       <DependentUpon>AppTitleBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationManager\Applications.cs" />
-    <Compile Include="Controls\Applications\MemoryManagerApp.xaml.cs">
+    <Compile Include="Managers\ApplicationManager\Applications.cs" />
+    <Compile Include="Controls\Applications\Memory Manager App\MemoryManagerApp.xaml.cs">
       <DependentUpon>MemoryManagerApp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Applications\Tic Tac Toe\TicTacToeApp.xaml.cs">
+    <Compile Include="Controls\Applications\Tic Tac Toe App\TicTacToeApp.xaml.cs">
       <DependentUpon>TicTacToeApp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Applications\Base\AppWindowBase.cs" />
@@ -109,28 +106,27 @@
     <Compile Include="Controls\Taskbar\TaskbarItem.xaml.cs">
       <DependentUpon>TaskbarItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationManager\ApplicationManager.cs" />
-    <Compile Include="FileManager\FileManager.cs" />
-    <Compile Include="FileManager\FileManagerInstance.cs" />
-    <Compile Include="FileManager\StorageBlock.xaml.cs">
+    <Compile Include="Managers\ApplicationManager\ApplicationManager.cs" />
+    <Compile Include="Managers\FileManager\FileManager.cs" />
+    <Compile Include="Managers\FileManager\FileManagerInstance.cs" />
+    <Compile Include="Controls\Applications\FileManager App\StorageBlock.xaml.cs">
       <DependentUpon>StorageBlock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Memory Manager\MemAllocationMode.cs" />
-    <Compile Include="Memory Manager\MemoryBlock.cs" />
-    <Compile Include="Memory Manager\MemoryManager.cs" />
-    <Compile Include="ApplicationManager\Application.cs" />
-    <Compile Include="ApplicationManager\Process.cs" />
-    <Compile Include="Memory Manager\MemoryManagerService.cs" />
+    <Compile Include="Managers\Memory Manager\MemAllocationMode.cs" />
+    <Compile Include="Managers\Memory Manager\MemoryBlock.cs" />
+    <Compile Include="Managers\Memory Manager\MemoryManager.cs" />
+    <Compile Include="Managers\ApplicationManager\Application.cs" />
+    <Compile Include="Managers\ApplicationManager\Process.cs" />
     <Compile Include="Styles\Converters\CenterToolTipConverter.cs" />
-    <Page Include="Controls\Applications\FileManagerApp.xaml">
+    <Page Include="Controls\Applications\FileManager App\FileManagerApp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Applications\ProcessManangerApp.xaml">
+    <Page Include="Controls\Applications\Process Manager App\ProcessManangerApp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Applications\Tic Tac Toe\GameSquareItem.xaml">
+    <Page Include="Controls\Applications\Tic Tac Toe App\GameSquareItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -138,11 +134,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Applications\MemoryManagerApp.xaml">
+    <Page Include="Controls\Applications\Memory Manager App\MemoryManagerApp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Applications\Tic Tac Toe\TicTacToeApp.xaml">
+    <Page Include="Controls\Applications\Tic Tac Toe App\TicTacToeApp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -166,7 +162,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FileManager\StorageBlock.xaml">
+    <Page Include="Controls\Applications\FileManager App\StorageBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -182,11 +178,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Resources\Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Styles\Controls\Hover.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Grid\Hover.xaml">
+    <Page Include="Styles\Fonts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -213,13 +209,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\Enter-The-Grid.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -252,10 +248,7 @@
     <Resource Include="Controls\Desktop\Images\injection.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Entypo-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Controls\Applications\Images\cylinder.png" />
+    <Resource Include="Controls\Applications\FileManager App\Images\cylinder.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
@@ -263,6 +256,7 @@
   <ItemGroup>
     <Resource Include="dank.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.2.0.0\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.2.0.0\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

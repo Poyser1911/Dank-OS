@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using static Dank_OS.Controls.Applications.Base.AppWindowState;
 
 namespace Dank_OS
 {
@@ -27,12 +17,12 @@ namespace Dank_OS
         {
             InitializeComponent();
             DataContext = this;
-            InitializeOS();
+            InitializeOs();
         }
         /// <summary>
         /// Setup and Monitor OS Operations
         /// </summary>
-        private void InitializeOS()
+        private void InitializeOs()
         {
             System.IO.File.WriteAllText("ProcessHistory.txt", "");
             AllocAppStorages();
@@ -64,13 +54,12 @@ namespace Dank_OS
         private void RegisterEvents()
         {
             _appM.OnProcessStarted += AppM_OnProcessStarted;
-            _appM.OnBackGroundProcessStarted += AppM_OnBackGroundProcessStarted;
             _appM.OnAppClearUp += (app) => AppTaskbar.RemoveTaskBarItem(app.AppProcess.ProcessID);
             _appM.OnProcessResume += _appM_OnProcessResume;
 
 
             AppTaskbar.TaskBarItemOpened += (pid) => _appM.ResumeProcess(pid);
-            AppTaskbar.TaskBarItemClosed += (pid) => AppWindowLogic_OnAppClose(pid);
+            AppTaskbar.TaskBarItemClosed += CloseApp;
 
             memory.OnAppLaunchRequest += (app) => _appM.ResumeProcess(0);
             process.OnAppLaunchRequest += (app) => _appM.ResumeProcess(1);
@@ -81,46 +70,82 @@ namespace Dank_OS
 
         private void _appM_OnProcessResume(Application app)
         {
-            //Check if System App Being Launched and Attach attach Active State
-            if (app.AppStates == AppState.Background)
+            if (app.IsSystemApp && app.AppWindowLogic.WindowState == None)
             {
-                app.AppStates |= AppState.Active;
                 AppTaskbar.AddTaskBarItem(app);
+                app.AppWindowLogic.WindowState = Default;
             }
+            app.AppWindowLogic.WindowState &= ~Minimize;
+
             //Display App Refernece Window
             ShowWindow(app);
         }
 
         private void AppM_OnProcessStarted(Application app)
         {
-            AppTaskbar.AddTaskBarItem(app);
-            ShowWindow(app);
-            app.AppWindowLogic.OnAppClose += AppWindowLogic_OnAppClose;
-        }
-        private void AppM_OnBackGroundProcessStarted(Application app)
-        {
-            app.AppStates = AppState.Background;
-            app.AppWindowLogic.OnAppClose += (pid) =>
+            if (!app.IsSystemApp)
             {
-                AppView.Children.Clear();
-                AppTaskbar.RemoveTaskBarItem(pid);
-                app.AppStates ^= AppState.Active;
-            };
-        }
-        private void AppWindowLogic_OnAppClose(int ProcessID)
-        {
-            AppView.Children.Clear();
-            _appM.EndAppProcess(ProcessID);
-            AppTaskbar.RemoveTaskBarItem(ProcessID);
+                AppTaskbar.AddTaskBarItem(app);
+                app.AppWindowLogic.WindowState = Default;
+                ShowWindow(app);
+            }
+            app.AppWindowLogic.OnWindowAction += AppWindowLogic_OnWindowAction;
+
         }
 
+        private void AppWindowLogic_OnWindowAction(Application app)
+        {
+            if (app.AppWindowLogic.WindowState == CloseRequest)
+                CloseApp(app);
+            else
+                ShowWindow(app);
+        }
+
+        private void CloseApp(Application app)
+        {
+            AppView.Children.Clear();
+            AppTaskbar.RemoveTaskBarItem(app.AppProcess.ProcessID);
+            if (app.IsSystemApp)
+                app.AppWindowLogic.WindowState = None;
+            else
+                _appM.EndAppProcess(app.AppProcess.ProcessID);
+        }
         private void ShowWindow(Application app)
         {
+
             if (AppView.Children.Count != 0)
-                if ((AppView.Children[0] as AppWindowBase).AppData.AppProcess.ProcessID == app.AppProcess.ProcessID)
-                    return;
+            {
+                AppWindowBase child = (AppView.Children[0] as AppWindowBase);
+                if (child.AppData.AppProcess.ProcessID != app.AppProcess.ProcessID)
+                    child.WindowState |= Minimize;
+            }
+            switch (app.AppWindowLogic.WindowState)
+            {
+                case Default:
+                    SetDefaultAppView();
+                    break;
+                case Maximize:
+                    SetMaximizedAppView();
+                    break;
+            }
             AppView.Children.Clear();
-            AppView.Children.Add(app.AppWindowLogic);
+            if (!app.AppWindowLogic.WindowState.HasFlag(Minimize))
+                AppView.Children.Add(app.AppWindowLogic);
+        }
+
+        private void SetDefaultAppView()
+        {
+            Grid.SetColumn(AppView, 1);
+            Grid.SetRow(AppView, 1);
+            Grid.SetRowSpan(AppView, 4);
+            Grid.SetColumnSpan(AppView, 1);
+        }
+        private void SetMaximizedAppView()
+        {
+            Grid.SetColumn(AppView, 0);
+            Grid.SetRow(AppView, 0);
+            Grid.SetRowSpan(AppView, 6);
+            Grid.SetColumnSpan(AppView, 3);
         }
     }
 }

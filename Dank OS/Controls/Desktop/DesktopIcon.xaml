@@ -14,20 +14,11 @@
         <BitmapImage x:Key="DefaultImage"  UriSource="/Dank OS;component/Controls/Desktop/Icons/tictactoe.png" />
     </UserControl.Resources>
     <Grid Style="{StaticResource ItemHoverEffect}">
-        <!--<Grid.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Open"/>
-                <MenuItem Header="Open As Adminstrator"/>
-                <MenuItem Header="Copy"/>
-                <MenuItem Header="Cut"/>
-                <MenuItem Header="Delete"/>
-            </ContextMenu>
-        </Grid.ContextMenu>-->
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Image Grid.Row="0" Source="{Binding AppData.AppIcon,FallbackValue={StaticResource DefaultImage}}"/>
-        <TextBlock Padding="0,7,0,0" Grid.Row="1" FontSize="15" Text="{Binding AppData.AppName, FallbackValue='Tic Tac Toe'}" FontFamily="Enter The Grid" Foreground="Black" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+        <TextBlock Padding="0,7,0,0" Grid.Row="1" FontSize="15" Text="{Binding AppData.AppName, FallbackValue='Tic Tac Toe'}" FontFamily="{StaticResource EnterTheGrid}" Foreground="Black" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"/>
     </Grid>
 </UserControl>

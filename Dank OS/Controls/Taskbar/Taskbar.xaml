@@ -15,7 +15,13 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <Image Source="/Dank OS;component/Controls/Desktop/Images/injection.png" Margin="7"/>
+        <Viewbox>
+            <Label Content="R" FontFamily="{StaticResource EnterTheGrid}">
+                <Label.Effect>
+                    <DropShadowEffect Color="White" BlurRadius="10" ShadowDepth="0" Opacity="1"  RenderingBias="Quality" Direction="0"/>
+                </Label.Effect>
+            </Label>
+        </Viewbox>
         <StackPanel Grid.Column="1" x:Name="TaskBarStack" Orientation="Horizontal"/>
         <DankOS:Clock Grid.Column="2" Margin="0,0,10,0"/>
     </Grid>

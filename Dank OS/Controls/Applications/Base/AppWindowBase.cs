@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
+using Dank_OS.Controls.Applications.Base;
 
 namespace Dank_OS
 {
@@ -14,16 +10,26 @@ namespace Dank_OS
     {
         public Application AppData { get; set; }
 
+        public AppWindowState WindowState { get; set; } = AppWindowState.None;
 
-        public delegate void AppClose(int ProcessID);
-        public event AppClose OnAppClose;
+        public delegate void AppWindowAction(Application app);
+        public event AppWindowAction OnWindowAction;
 
         public string Title { get; set; }
         public string AppIconSource { get; set; }
 
-        public void CloseApp()
+        public void WindowAction(AppWindowState state)
         {
-            OnAppClose?.Invoke(AppData.AppProcess.ProcessID);
+            if (state == AppWindowState.Maximize && WindowState.HasFlag(AppWindowState.Maximize))
+                WindowState = AppWindowState.Default;
+            else if (state == AppWindowState.Maximize)
+                WindowState = state;
+            else if (state == AppWindowState.CloseRequest)
+                WindowState = state;
+            else
+                WindowState |= state;
+
+            OnWindowAction?.Invoke(AppData);
         }
         public AppWindowBase()
         {
@@ -31,17 +37,17 @@ namespace Dank_OS
         }
 
         #region Private - Dragable
-        private double m_MouseX;
-        private double m_MouseY;
+        private double _mMouseX;
+        private double _mMouseY;
         private Grid _container;
         private AppTitleBar _control;
         #endregion
 
-        protected void EnableDragable(Grid Container, AppTitleBar control)
+        protected void EnableDragable(Grid container, AppTitleBar control)
         {
 
             _control = control;
-            _container = Container;
+            _container = container;
             _control.PreviewMouseUp += (s, e) => e.MouseDevice.Capture(null);
             _control.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(control_MouseLeftButtonUp);
             _control.PreviewMouseMove += new MouseEventHandler(control_MouseMove);
@@ -49,8 +55,8 @@ namespace Dank_OS
         private void control_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             // Get the Position of Window so that it will set margin from this window
-            m_MouseX = e.GetPosition(this).X;
-            m_MouseY = e.GetPosition(this).Y;
+            _mMouseX = e.GetPosition(this).X;
+            _mMouseY = e.GetPosition(this).Y;
         }
         private void control_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -58,36 +64,36 @@ namespace Dank_OS
             {
                 // Capture the mouse for border
                 e.MouseDevice.Capture(_control);
-                System.Windows.Thickness _margin = new System.Windows.Thickness();
-                int _tempX = Convert.ToInt32(e.GetPosition(this).X);
-                int _tempY = Convert.ToInt32(e.GetPosition(this).Y);
-                _margin = _container.Margin;
+                System.Windows.Thickness margin = new System.Windows.Thickness();
+                int tempX = Convert.ToInt32(e.GetPosition(this).X);
+                int tempY = Convert.ToInt32(e.GetPosition(this).Y);
+                margin = _container.Margin;
                 // when While moving _tempX get greater than m_MouseX relative to usercontrol 
-                if (m_MouseX > _tempX)
+                if (_mMouseX > tempX)
                 {
                     // add the difference of both to Left
-                    _margin.Left += (_tempX - m_MouseX);
+                    margin.Left += (tempX - _mMouseX);
                     // subtract the difference of both to Left
-                    _margin.Right -= (_tempX - m_MouseX);
+                    margin.Right -= (tempX - _mMouseX);
                 }
                 else
                 {
-                    _margin.Left -= (m_MouseX - _tempX);
-                    _margin.Right -= (_tempX - m_MouseX);
+                    margin.Left -= (_mMouseX - tempX);
+                    margin.Right -= (tempX - _mMouseX);
                 }
-                if (m_MouseY > _tempY)
+                if (_mMouseY > tempY)
                 {
-                    _margin.Top += (_tempY - m_MouseY);
-                    _margin.Bottom -= (_tempY - m_MouseY);
+                    margin.Top += (tempY - _mMouseY);
+                    margin.Bottom -= (tempY - _mMouseY);
                 }
                 else
                 {
-                    _margin.Top -= (m_MouseY - _tempY);
-                    _margin.Bottom -= (_tempY - m_MouseY);
+                    margin.Top -= (_mMouseY - tempY);
+                    margin.Bottom -= (tempY - _mMouseY);
                 }
-                _container.Margin = _margin;
-                m_MouseX = _tempX;
-                m_MouseY = _tempY;
+                _container.Margin = margin;
+                _mMouseX = tempX;
+                _mMouseY = tempY;
             }
         }
 
@@ -96,8 +102,10 @@ namespace Dank_OS
             base.OnApplyTemplate();
             Grid mainGrd = GetTemplateChild("mainGrd") as Grid;
             AppTitleBar titlebar = GetTemplateChild("titlebar") as AppTitleBar;
-            //titlebar.AppIconSource = AppIconSource;
-            titlebar.appClose.MouseLeftButtonUp += (s, e) => CloseApp();
+
+            titlebar.appClose.MouseLeftButtonUp += (s, e) => WindowAction(AppWindowState.CloseRequest);
+            titlebar.appMaximize.MouseLeftButtonUp += (s, e) => WindowAction(AppWindowState.Maximize);
+            titlebar.appMinimize.MouseLeftButtonUp += (s, e) => WindowAction(AppWindowState.Minimize);
             EnableDragable(mainGrd, titlebar);
         }
     }

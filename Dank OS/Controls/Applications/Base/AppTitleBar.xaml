@@ -20,7 +20,7 @@
             </Grid.ColumnDefinitions>
             <Image Source="{Binding AppIconSource}"/>
             <Viewbox Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left">
-                <Label Content="{Binding AppTitle,FallbackValue=App Title}"  Foreground="GhostWhite" FontFamily="Enter The Grid"/>
+                <Label Content="{Binding AppTitle,FallbackValue=App Title}"  Foreground="GhostWhite" FontFamily="{StaticResource EnterTheGrid}"/>
             </Viewbox>
 
             <Viewbox Grid.Column="2">
